@@ -13,12 +13,17 @@ $(function() {
   var couples = config.couples
     , cards = couples * 2;
 
-  for (var n = cards, c = 1; n % 2 === 0 && c < n / 2; c *= 2) {
-    n /= 2;
+// Lists all divisors from number of playing cards
+  for (var d = 1, l = []; d <= cards; d++){
+    if(cards % d === 0) {
+      l.push(d);
+    }
   }
 
-  var rows = c
-    , cols = cards / rows;
+// Select best divisors from the list
+  var w = (l.length % 2 === 0) ? [1, 0] : [.5, .5]
+    , rows = l[l.length / 2 - w[0]]
+    , cols = l[l.length / 2 - w[1]];
 
 // Playing Cards Selection
   var minId = config.id.min
