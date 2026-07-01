@@ -6,6 +6,11 @@ Combine them and obtain your first **JavaScript** game in few minutes.
 
 [Slides](https://javier.beaumont.eus/slides/memo.js/) · [Live Demo](https://javier.beaumont.eus/slides/memo.js/demo)
 
+## Credits
+
+- **[jQuery](https://jquery.com/)** ([MIT License](https://jquery.org/license/))
+- **[Fluent UI Emoji](https://github.com/microsoft/fluentui-emoji)** ([MIT License](https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE))
+
 ## License
 
-This project is released under the MIT License — see [LICENSE](LICENSE).
+This project is released under the [MIT License](LICENSE).

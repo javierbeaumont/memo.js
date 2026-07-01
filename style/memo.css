@@ -4,17 +4,26 @@
 }
 
 .card, .card img {
-  width: 90px;
   height: 90px;
+  width: 90px;
 }
 
 .card {
   float: left;
-  position: relative;
   margin: 5px;
+  position: relative;
 }
 
 .card img {
   position: absolute;
   top: 0;
+}
+
+[data-element="cover"] {
+  background: #34495e;
+  cursor: pointer;
+  height: 90px;
+  position: absolute;
+  top: 0;
+  width: 90px;
 }

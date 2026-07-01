@@ -1,11 +1,25 @@
 $(function() {
 // Variables Configuration
+  var emojis = [
+        'Alien', 'Ant', 'Avocado', 'Banana', 'Bat', 'Bear', 'Beaver', 'Bird', 'Boar', 'Bug',
+        'Butterfly', 'Cactus', 'Cat', 'Chicken', 'Chipmunk', 'Cockroach', 'Cookie', 'Cow', 'Crab',
+        'Cricket', 'Crocodile', 'Crown', 'Dodo', 'Dog', 'Dolphin', 'Donkey', 'Dragon', 'Duck', 'Eagle',
+        'Elephant', 'Ewe', 'Fish', 'Flamingo', 'Fox', 'Frog', 'Ghost', 'Giraffe', 'Goat', 'Gorilla',
+        'Hamster', 'Hedgehog', 'Hippopotamus', 'Honeybee', 'Horse', 'Kangaroo', 'Koala', 'Lady beetle',
+        'Leopard', 'Lion', 'Lizard', 'Llama', 'Lobster', 'Mammoth', 'Monkey', 'Mosquito', 'Mouse',
+        'Mushroom', 'Octopus', 'Otter', 'Owl', 'Panda', 'Parrot', 'Peacock', 'Penguin', 'Pig', 'Pizza',
+        'Polar bear', 'Rabbit', 'Raccoon', 'Ram', 'Rat', 'Rhinoceros', 'Robot', 'Rocket', 'Rooster',
+        'Rose', 'Sauropod', 'Scorpion', 'Seal', 'Shark', 'Shrimp', 'Skunk', 'Sloth', 'Snail', 'Snake',
+        'Snowflake', 'Spider', 'Strawberry', 'Sunflower', 'Swan', 'Teddy bear', 'Tiger', 'Turkey',
+        'Turtle', 'Unicorn', 'Watermelon', 'Whale', 'Wolf', 'Zebra'
+      ];
+
   var validCouples = [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36]
     , config = {
         couples: validCouples[Math.floor(Math.random() * validCouples.length)],
         id: {
-          min: 1,
-          max: 480
+          min: 0,
+          max: emojis.length
         }
       };
 
@@ -29,7 +43,7 @@ $(function() {
   var minId = config.id.min
     , maxId = config.id.max
     , list = [];
- 
+
   while(list.length < couples) {
     var m = Math.floor((Math.random() * (maxId - minId)) + minId);
 
@@ -46,8 +60,8 @@ $(function() {
 // Playing Card HTML Code
   var html = '\
         <div class="card" data-status="hide">\
-          <img src="image/card_%id%.jpg" />\
-          <img src="image/cover.jpg" data-element="cover" />\
+          <img src="image/%src%" />\
+          <div data-element="cover"></div>\
         </div>';
 
 // Print Board and Playing Cards
@@ -56,7 +70,9 @@ $(function() {
       var data = '';
 
       $.each(list, function(index, id) {
-        data += html.replace('%id%', id);
+        var file = emojis[id].toLowerCase().replace(/ /g, '_') + '_3d.png';
+
+        data += html.replace('%src%', file);
       });
 
       return data;
