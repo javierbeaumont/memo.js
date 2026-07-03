@@ -4,7 +4,7 @@
 **Memorize** is one of the simplest games of this genre.
 Combine them and obtain your first **JavaScript** game in few minutes.
 
-[Slides](https://javier.beaumont.eus/slides/memo.js/) · [Live Demo](https://javier.beaumont.eus/slides/memo.js/demo)
+[Slides](https://javier.beaumont.eus/slides/memo.js/) · [Live Demo](https://javier.beaumont.eus/memo.js/)
 
 ## Credits
 
