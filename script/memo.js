@@ -52,10 +52,16 @@ $(function() {
     }
   }
 
-// Shuffle The Deck
-  $.merge(list, list).sort(function() {
-    return 0.5 - Math.random();
-  });
+// Shuffle The Deck (Fisher-Yates)
+  $.merge(list, list);
+
+  for (var position = list.length - 1; position > 0; position--) {
+    var randomIndex = Math.floor(Math.random() * (position + 1))
+      , card = list[position];
+
+    list[position] = list[randomIndex];
+    list[randomIndex] = card;
+  }
 
 // Playing Card HTML Code
   var html = '\
