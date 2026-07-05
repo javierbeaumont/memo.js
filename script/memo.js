@@ -94,9 +94,12 @@ $(function() {
 
 // Player Interaction
   var count = 0
-    , pair = [];
+    , pair = []
+    , locked = false;
 
   $('[data-element="cover"]').on('click', function() {
+    if (locked) return;   // ignore clicks while two cards flip back
+
     count ++;
 
     if (count <= 2) {
@@ -116,12 +119,16 @@ $(function() {
 
           pair = [];
         } else {
+          locked = true;
+
           $('[data-status="view"] [data-element="cover"]').delay(500).slideDown('slow', function(){
             $('[data-status="view"]').attr('data-status', 'hide');
 
             count = pair.length;
 
             pair = [];
+
+            locked = false;
           });
         }
       }
