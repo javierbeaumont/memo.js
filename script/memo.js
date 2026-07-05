@@ -1,6 +1,6 @@
 $(function() {
 // Variables Configuration
-  var emojis = [
+  const emojis = [
         'Alien', 'Ant', 'Avocado', 'Banana', 'Bat', 'Bear', 'Beaver', 'Bird', 'Boar', 'Bug',
         'Butterfly', 'Cactus', 'Cat', 'Chicken', 'Chipmunk', 'Cockroach', 'Cookie', 'Cow', 'Crab',
         'Cricket', 'Crocodile', 'Crown', 'Dodo', 'Dog', 'Dolphin', 'Donkey', 'Dragon', 'Duck', 'Eagle',
@@ -14,7 +14,7 @@ $(function() {
         'Turtle', 'Unicorn', 'Watermelon', 'Whale', 'Wolf', 'Zebra'
       ];
 
-  var validCouples = [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36]
+  const validCouples = [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36]
     , config = {
         couples: validCouples[Math.floor(Math.random() * validCouples.length)],
         id: {
@@ -24,28 +24,30 @@ $(function() {
       };
 
 // Playing Card Distribution
-  var couples = config.couples
+  const couples = config.couples
     , cards = couples * 2;
 
 // Lists all divisors from number of playing cards
-  for (var d = 1, l = []; d <= cards; d++){
+  const l = [];
+
+  for (let d = 1; d <= cards; d++){
     if(cards % d === 0) {
       l.push(d);
     }
   }
 
 // Select best divisors from the list
-  var w = (l.length % 2 === 0) ? [1, 0] : [.5, .5]
+  const w = (l.length % 2 === 0) ? [1, 0] : [.5, .5]
     , rows = l[l.length / 2 - w[0]]
     , cols = l[l.length / 2 - w[1]];
 
 // Playing Cards Selection
-  var minId = config.id.min
+  const minId = config.id.min
     , maxId = config.id.max
     , list = [];
 
   while(list.length < couples) {
-    var m = Math.floor((Math.random() * (maxId - minId)) + minId);
+    const m = Math.floor((Math.random() * (maxId - minId)) + minId);
 
     if (maxId - minId <= list.length || $.inArray(m, list) === -1) {
       list.push(m);
@@ -55,8 +57,8 @@ $(function() {
 // Shuffle The Deck (Fisher-Yates)
   $.merge(list, list);
 
-  for (var position = list.length - 1; position > 0; position--) {
-    var randomIndex = Math.floor(Math.random() * (position + 1))
+  for (let position = list.length - 1; position > 0; position--) {
+    const randomIndex = Math.floor(Math.random() * (position + 1))
       , card = list[position];
 
     list[position] = list[randomIndex];
@@ -64,7 +66,7 @@ $(function() {
   }
 
 // Playing Card HTML Code
-  var html = '\
+  const html = '\
         <div class="card" data-status="hide">\
           <img src="image/%src%" />\
           <div data-element="cover"></div>\
@@ -73,10 +75,10 @@ $(function() {
 // Print Board and Playing Cards
   $('[data-element="board"]')
     .append(function() {
-      var data = '';
+      let data = '';
 
       $.each(list, function(index, id) {
-        var file = emojis[id].toLowerCase().replace(/ /g, '_') + '_3d.png';
+        const file = emojis[id].toLowerCase().replace(/ /g, '_') + '_3d.png';
 
         data += html.replace('%src%', file);
       });
@@ -93,7 +95,7 @@ $(function() {
     });
 
 // Player Interaction
-  var count = 0
+  let count = 0
     , pair = []
     , locked = false;
 
