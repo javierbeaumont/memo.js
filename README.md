@@ -10,6 +10,7 @@ Combine them and obtain your first **JavaScript** game in few minutes.
 
 - **[jQuery](https://jquery.com/)** ([MIT License](https://jquery.org/license/))
 - **[Fluent UI Emoji](https://github.com/microsoft/fluentui-emoji)** ([MIT License](https://github.com/microsoft/fluentui-emoji/blob/main/LICENSE))
+- **[Radix Colors](https://github.com/radix-ui/colors)** ([MIT License](https://github.com/radix-ui/colors/blob/main/LICENSE))
 
 ## License
 

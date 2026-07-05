@@ -1,8 +1,6 @@
-/* Palette: Gruvbox dark (github.com/morhetz/gruvbox). */
 :root {
-  --bg: #282828;    /* bg0: the ground */
-  --card: #fbf1c7;  /* fg0: the revealed card */
-  --mut: #a89984;   /* fg4: muted text */
+  --bg: #111111;
+  --card: #eeeeee;
 }
 
 body {
@@ -23,13 +21,13 @@ body {
   border-radius: 9px;
   float: left;
   height: 120px;
-  margin: 9px;
+  margin: 9px; /* gap ~20% of card width, like the OG image */
   position: relative;
   width: 90px;
 }
 
 .card img {
-  height: 78px;
+  height: 78px; /* 78x78 emoji (~86% of the card), centred */
   left: 6px;
   position: absolute;
   top: 21px;
