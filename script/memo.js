@@ -14,9 +14,16 @@ $(function() {
         'Turtle', 'Unicorn', 'Watermelon', 'Whale', 'Wolf', 'Zebra'
       ];
 
-  const validCouples = [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36]
-    , config = {
-        couples: validCouples[Math.floor(Math.random() * validCouples.length)],
+  const validCouples = [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36];
+
+// Level is a 1-based index into validCouples: use ?level=N if valid, else random
+  const requested = parseInt(new URLSearchParams(location.search).get('level'), 10)
+    , level = (requested >= 1 && requested <= validCouples.length)
+        ? requested
+        : Math.floor(Math.random() * validCouples.length) + 1;
+
+  const config = {
+        couples: validCouples[level - 1],
         id: {
           min: 0,
           max: emojis.length
@@ -87,14 +94,52 @@ $(function() {
     })
     .css({ '--long': long, '--short': short });
 
+// Level selector: 1..N, reflects the current level, reloads on change
+  let options = '';
+
+  for (let n = 1; n <= validCouples.length; n++) {
+    options += '<option value="' + n + '">' + n + '</option>';
+  }
+
+  $('#level').html(options).val(level).on('change', function() {
+    location.search = 'level=' + $(this).val();
+  });
+
 // Player Interaction
   let count = 0
     , pair = []
-    , locked = false;
+    , locked = false
+    , moves = 0
+    , startTime = null
+    , timer = null;
+
+// mm:ss from milliseconds
+  function formatTime(ms) {
+    const seconds = Math.floor(ms / 1000) % 60
+      , minutes = Math.floor(ms / 60000);
+
+    return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+  }
+
+  function showWin() {
+    clearInterval(timer);
+
+    $('#win-time').text(formatTime(Date.now() - startTime));
+    $('#win-moves').text(moves);
+    $('#win').css('display', 'flex');
+  }
 
   $('[data-element="cover"]').on('click', function() {
     if (locked) return;                                          // two cards are flipping back
     if ($(this).parent().attr('data-status') !== 'hide') return; // card already flipped
+
+    if (!startTime) {
+      startTime = Date.now();
+
+      timer = setInterval(function() {
+        $('#stats-time').text(formatTime(Date.now() - startTime));
+      }, 1000);
+    }
 
     count ++;
 
@@ -108,12 +153,17 @@ $(function() {
       }
 
       if (count === 2) {
+        moves ++;
+        $('#stats-moves').text(moves);
+
         if (pair[0] === pair[1]) {
           $('[data-status="view"]').attr('data-status', 'show');
 
           count = 0;
 
           pair = [];
+
+          if ($('[data-status="show"]').length === cards) showWin();
         } else {
           locked = true;
 
@@ -130,4 +180,16 @@ $(function() {
       }
     }
   });
+
+  $('#replay').on('click', function() {
+    location.search = 'level=' + level;
+  });
+
+  if (level < validCouples.length) {
+    $('#next').on('click', function() {
+      location.search = 'level=' + (level + 1);
+    });
+  } else {
+    $('#next').remove();
+  }
 });

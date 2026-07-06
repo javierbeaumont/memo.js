@@ -13,6 +13,22 @@
     <script src="script/memo.js"></script>
   </head>
   <body>
+    <div id="stats">
+      <span>Level: <select id="level"></select></span>
+      <span>Time: <b id="stats-time">0:00</b></span>
+      <span>Attempts: <b id="stats-moves">0</b></span>
+    </div>
+
     <div class="board" data-element="board"></div>
+
+    <div id="win">
+      <h1>You won!</h1>
+      <p>Time: <span id="win-time"></span></p>
+      <p>Attempts: <span id="win-moves"></span></p>
+      <div class="win-actions">
+        <button id="replay">Replay</button>
+        <button id="next">Next</button>
+      </div>
+    </div>
   </body>
 </html>

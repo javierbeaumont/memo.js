@@ -1,15 +1,104 @@
 :root {
   --bg: #111111;
   --card: #eeeeee;
+  --txt: #eeeeee;
+  --mut: #b4b4b4;
+  --acc: #e54666;
+  --acc-hi: #ec5a72;
+  --on-acc: #ffffff;
 }
 
 body {
   align-items: center;
   background: var(--bg);
+  color: var(--txt);
   display: flex;
+  flex-direction: column;
+  font-family: system-ui, sans-serif;
   justify-content: center;
   margin: 0;
   min-height: 100vh;
+}
+
+#stats {
+  color: var(--mut);
+  letter-spacing: 1px;
+  padding: 12px;
+  text-align: center;
+}
+
+#stats b {
+  color: var(--txt);
+}
+
+#stats span + span {
+  margin-left: 24px;
+}
+
+#level {
+  background: var(--bg);
+  border: 1px solid var(--mut);
+  border-radius: 4px;
+  color: var(--txt);
+  margin-left: 6px;
+  padding: 2px 6px;
+}
+
+#win {
+  align-items: center;
+  background: rgba(17, 17, 17, 0.92);
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+#win h1 {
+  font-size: 3rem;
+  margin: 0 0 16px;
+}
+
+#win p {
+  color: var(--mut);
+  font-size: 1.2rem;
+  margin: 4px 0;
+}
+
+.win-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+#win button {
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 12px 28px;
+}
+
+#next {
+  background: var(--acc);
+  border: 0;
+  color: var(--on-acc);
+}
+
+#next:hover {
+  background: var(--acc-hi);
+}
+
+#replay {
+  background: transparent;
+  border: 1px solid var(--mut);
+  color: var(--txt);
+}
+
+#replay:hover {
+  border-color: var(--txt);
 }
 
 .board {
