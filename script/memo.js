@@ -100,7 +100,8 @@ $(function() {
     , locked = false;
 
   $('[data-element="cover"]').on('click', function() {
-    if (locked) return;   // ignore clicks while two cards flip back
+    if (locked) return;                                          // two cards are flipping back
+    if ($(this).parent().attr('data-status') !== 'hide') return; // card already flipped
 
     count ++;
 
