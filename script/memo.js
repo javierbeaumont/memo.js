@@ -38,8 +38,8 @@ $(function() {
 
 // Select best divisors from the list
   const w = (l.length % 2 === 0) ? [1, 0] : [.5, .5]
-    , rows = l[l.length / 2 - w[0]]
-    , cols = l[l.length / 2 - w[1]];
+    , short = l[l.length / 2 - w[0]]
+    , long  = l[l.length / 2 - w[1]];
 
 // Playing Cards Selection
   const minId = config.id.min
@@ -85,14 +85,7 @@ $(function() {
 
       return data;
     })
-    .css({
-      width: function() {
-        return $(this).children().outerWidth(true) * cols;
-      },
-      height: function() {
-        return $(this).children().outerHeight(true) * rows;
-      }
-    });
+    .css({ '--long': long, '--short': short });
 
 // Player Interaction
   let count = 0

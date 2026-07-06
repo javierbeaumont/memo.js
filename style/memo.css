@@ -13,33 +13,45 @@ body {
 }
 
 .board {
-  padding: 5px;
+  box-sizing: border-box;
+  display: grid;
+  gap: clamp(8px, 2.2vw, 18px);
+  grid-template-columns: repeat(var(--long), 1fr);
+  margin: 0 auto;
+  padding: 9px;
+  width: min(calc(var(--long) * 108px), 100vw); /* --long and --short are set by JS */
+}
+
+@media (orientation: portrait) {
+  .board {
+    grid-template-columns: repeat(var(--short), 1fr);
+    width: min(calc(var(--short) * 108px), 100vw);
+  }
 }
 
 .card {
+  aspect-ratio: 3 / 4;
   background: var(--card);
   border-radius: 9px;
-  float: left;
-  height: 120px;
-  margin: 9px; /* gap ~20% of card width, like the OG image */
   position: relative;
-  width: 90px;
 }
 
 .card img {
-  height: 78px; /* 78x78 emoji (~86% of the card), centred */
-  left: 6px;
+  height: auto;
+  left: 50%;
   position: absolute;
-  top: 21px;
-  width: 78px;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 86%;
 }
 
 [data-element="cover"] {
   background: url("../image/card-back.svg") center / cover no-repeat;
   border-radius: 9px;
   cursor: pointer;
-  height: 120px;
+  height: 100%;
+  left: 0;
   position: absolute;
   top: 0;
-  width: 90px;
+  width: 100%;
 }
