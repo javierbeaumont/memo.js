@@ -124,6 +124,7 @@ $(function() {
   function showWin() {
     clearInterval(timer);
 
+    $('#win-level').text(level);
     $('#win-time').text(formatTime(Date.now() - startTime));
     $('#win-moves').text(moves);
     $('#win').css('display', 'flex');
