@@ -71,11 +71,11 @@ $(function() {
   }
 
 // Playing Card HTML Code
-  const html = '\
-        <div class="card" data-status="hide">\
-          <img src="image/%src%" />\
-          <div data-element="cover"></div>\
-        </div>';
+  const card = file => `
+        <div class="card" data-status="hide">
+          <img src="image/${file}" />
+          <div data-element="cover"></div>
+        </div>`;
 
 // Print Board and Playing Cards
   $('[data-element="board"]')
@@ -85,7 +85,7 @@ $(function() {
       $.each(list, function(index, id) {
         const file = emojis[id].toLowerCase().replace(/ /g, '_') + '_3d.png';
 
-        data += html.replace('%src%', file);
+        data += card(file);
       });
 
       return data;
