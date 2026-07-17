@@ -65,11 +65,9 @@ $(function() {
   $.merge(list, list);
 
   for (let position = list.length - 1; position > 0; position--) {
-    const randomIndex = Math.floor(Math.random() * (position + 1))
-      , card = list[position];
+    const randomIndex = Math.floor(Math.random() * (position + 1));
 
-    list[position] = list[randomIndex];
-    list[randomIndex] = card;
+    [list[position], list[randomIndex]] = [list[randomIndex], list[position]];
   }
 
 // Playing Card HTML Code
