@@ -93,13 +93,11 @@ $(function() {
     .css({ '--long': long, '--short': short });
 
 // Level selector: 1..N, reflects the current level, reloads on change
-  let options = '';
-
   for (let n = 1; n <= validCouples.length; n++) {
-    options += '<option value="' + n + '">' + n + '</option>';
+    $('#level').append($('<option>', { value: n, text: n }));
   }
 
-  $('#level').html(options).val(level).on('change', function() {
+  $('#level').val(level).on('change', function() {
     location.search = 'level=' + $(this).val();
   });
 
