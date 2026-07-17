@@ -156,10 +156,6 @@ $(function() {
         if (pair[0] === pair[1]) {
           $('[data-status="view"]').attr('data-status', 'show');
 
-          count = 0;
-
-          pair = [];
-
           if ($('[data-status="show"]').length === cards) showWin();
         } else {
           locked = true;
@@ -168,13 +164,13 @@ $(function() {
             .promise().done(function() {
               $('[data-status="view"]').attr('data-status', 'hide');
 
-              count = 0;
-
-              pair = [];
-
               locked = false;
             });
         }
+
+        count = 0;
+
+        pair = [];
       }
     }
   });
