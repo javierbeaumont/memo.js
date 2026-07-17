@@ -44,6 +44,35 @@ body {
   padding: 2px 6px;
 }
 
+/* Footer below the board: the wordmark plus links to the deck and the source. */
+.stat-links {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.stat-links .mark {
+  color: var(--mut);
+  font-weight: 600;
+}
+
+.stat-links a {
+  background-color: currentColor;
+  color: var(--mut);
+  height: 15px;
+  width: 15px;
+}
+
+.stat-links a:hover {
+  color: var(--txt);
+}
+
+.stat-links .github {
+  -webkit-mask: url("../image/github.svg") center / contain no-repeat;
+  mask: url("../image/github.svg") center / contain no-repeat;
+}
+
 #win {
   align-items: center;
   background: rgba(17, 17, 17, 0.92);
@@ -55,6 +84,25 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
+  z-index: 10; /* sit above the footer (a flex item) so it is the only active layer */
+}
+
+#win-close {
+  -webkit-mask: url("../image/close.svg") center / contain no-repeat;
+  background-color: var(--mut);
+  border: 0;
+  cursor: pointer;
+  height: 22px;
+  mask: url("../image/close.svg") center / contain no-repeat;
+  padding: 0;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  width: 22px;
+}
+
+#win-close:hover {
+  background-color: var(--txt);
 }
 
 #win h1 {
@@ -126,7 +174,6 @@ body {
 }
 
 .card img {
-  height: auto;
   left: 50%;
   position: absolute;
   top: 50%;
@@ -138,9 +185,6 @@ body {
   background: url("../image/card-back.svg") center / cover no-repeat;
   border-radius: 9px;
   cursor: pointer;
-  height: 100%;
-  left: 0;
+  inset: 0;
   position: absolute;
-  top: 0;
-  width: 100%;
 }

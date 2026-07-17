@@ -3,14 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>memo.js - play</title>
+    <title>memo.js</title>
+    <link rel="apple-touch-icon" href="image/apple-touch-icon.png" />
     <link rel="canonical" href="https://javier.beaumont.eus/memo.js/" />
     <link rel="icon" type="image/svg+xml" href="image/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon.png" />
-    <link rel="apple-touch-icon" href="image/apple-touch-icon.png" />
     <link rel="stylesheet" href="style/memo.css" />
-    <script src="script/jquery.js"></script>
-    <script src="script/memo.js"></script>
+    <script src="script/jquery.js" defer></script>
+    <script src="script/memo.js" defer></script>
   </head>
   <body>
     <div id="stats">
@@ -22,6 +22,7 @@
     <div class="board" data-element="board"></div>
 
     <div id="win">
+      <button id="win-close" type="button" aria-label="Close"></button>
       <h1>You won!</h1>
       <p>Level: <span id="win-level"></span></p>
       <p>Time: <span id="win-time"></span></p>
@@ -31,5 +32,10 @@
         <button id="next">Next</button>
       </div>
     </div>
+
+    <footer class="stat-links">
+      <span class="mark">memo.js</span>
+      <a class="github" href="https://github.com/javierbeaumont/memo.js" aria-label="View the source" title="View the source"></a>
+    </footer>
   </body>
 </html>

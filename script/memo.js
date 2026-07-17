@@ -182,6 +182,10 @@ $(function() {
     }
   });
 
+  $('#win-close').on('click', function() {
+    $('#win').css('display', 'none');
+  });
+
   $('#replay').on('click', function() {
     location.search = 'level=' + level;
   });
