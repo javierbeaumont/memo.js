@@ -1,17 +1,17 @@
 $(function() {
 // Variables Configuration
   const emojis = [
-        'Alien', 'Ant', 'Avocado', 'Banana', 'Bat', 'Bear', 'Beaver', 'Bird', 'Boar', 'Bug',
-        'Butterfly', 'Cactus', 'Cat', 'Chicken', 'Chipmunk', 'Cockroach', 'Cookie', 'Cow', 'Crab',
-        'Cricket', 'Crocodile', 'Crown', 'Dodo', 'Dog', 'Dolphin', 'Donkey', 'Dragon', 'Duck', 'Eagle',
-        'Elephant', 'Ewe', 'Fish', 'Flamingo', 'Fox', 'Frog', 'Ghost', 'Giraffe', 'Goat', 'Gorilla',
-        'Hamster', 'Hedgehog', 'Hippopotamus', 'Honeybee', 'Horse', 'Kangaroo', 'Koala', 'Lady beetle',
-        'Leopard', 'Lion', 'Lizard', 'Llama', 'Lobster', 'Mammoth', 'Monkey', 'Mosquito', 'Mouse',
-        'Mushroom', 'Octopus', 'Otter', 'Owl', 'Panda', 'Parrot', 'Peacock', 'Penguin', 'Pig', 'Pizza',
-        'Polar bear', 'Rabbit', 'Raccoon', 'Ram', 'Rat', 'Rhinoceros', 'Robot', 'Rocket', 'Rooster',
-        'Rose', 'Sauropod', 'Scorpion', 'Seal', 'Shark', 'Shrimp', 'Skunk', 'Sloth', 'Snail', 'Snake',
-        'Snowflake', 'Spider', 'Strawberry', 'Sunflower', 'Swan', 'Teddy bear', 'Tiger', 'Turkey',
-        'Turtle', 'Unicorn', 'Watermelon', 'Whale', 'Wolf', 'Zebra'
+        'alien', 'ant', 'avocado', 'banana', 'bat', 'bear', 'beaver', 'bird', 'boar', 'bug',
+        'butterfly', 'cactus', 'cat', 'chicken', 'chipmunk', 'cockroach', 'cookie', 'cow', 'crab',
+        'cricket', 'crocodile', 'crown', 'dodo', 'dog', 'dolphin', 'donkey', 'dragon', 'duck', 'eagle',
+        'elephant', 'ewe', 'fish', 'flamingo', 'fox', 'frog', 'ghost', 'giraffe', 'goat', 'gorilla',
+        'hamster', 'hedgehog', 'hippopotamus', 'honeybee', 'horse', 'kangaroo', 'koala', 'lady_beetle',
+        'leopard', 'lion', 'lizard', 'llama', 'lobster', 'mammoth', 'monkey', 'mosquito', 'mouse',
+        'mushroom', 'octopus', 'otter', 'owl', 'panda', 'parrot', 'peacock', 'penguin', 'pig', 'pizza',
+        'polar_bear', 'rabbit', 'raccoon', 'ram', 'rat', 'rhinoceros', 'robot', 'rocket', 'rooster',
+        'rose', 'sauropod', 'scorpion', 'seal', 'shark', 'shrimp', 'skunk', 'sloth', 'snail', 'snake',
+        'snowflake', 'spider', 'strawberry', 'sunflower', 'swan', 'teddy_bear', 'tiger', 'turkey',
+        'turtle', 'unicorn', 'watermelon', 'whale', 'wolf', 'zebra'
       ];
 
   const validCouples = [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36];
@@ -83,7 +83,7 @@ $(function() {
       let data = '';
 
       $.each(list, function(index, id) {
-        const file = emojis[id].toLowerCase().replace(/ /g, '_') + '_3d.png';
+        const file = emojis[id] + '_3d.png';
 
         data += card(file);
       });
