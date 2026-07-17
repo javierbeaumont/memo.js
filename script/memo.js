@@ -143,11 +143,9 @@ $(function() {
     if (count <= 2) {
       $(this).slideUp('slow');
 
-      if($(this).parent().attr('data-status') === 'hide') {
-        $(this).parent().attr('data-status', 'view');
+      $(this).parent().attr('data-status', 'view');
 
-        pair.push($(this).prev().attr('src'));
-      }
+      pair.push($(this).prev().attr('src'));
 
       if (count === 2) {
         moves ++;
