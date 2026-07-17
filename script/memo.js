@@ -79,10 +79,10 @@ $(function() {
 
 // Print Board and Playing Cards
   $('[data-element="board"]')
-    .append(function() {
+    .append(() => {
       let data = '';
 
-      $.each(list, function(index, id) {
+      $.each(list, (index, id) => {
         const file = emojis[id] + '_3d.png';
 
         data += card(file);
@@ -110,21 +110,21 @@ $(function() {
     , timer = null;
 
 // mm:ss from milliseconds
-  function formatTime(ms) {
+  const formatTime = ms => {
     const seconds = Math.floor(ms / 1000) % 60
       , minutes = Math.floor(ms / 60000);
 
     return minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
-  }
+  };
 
-  function showWin() {
+  const showWin = () => {
     clearInterval(timer);
 
     $('#win-level').text(level);
     $('#win-time').text(formatTime(Date.now() - startTime));
     $('#win-moves').text(moves);
     $('#win').css('display', 'flex');
-  }
+  };
 
   $('[data-element="cover"]').on('click', function() {
     if (locked) return;                                          // two cards are flipping back
@@ -133,7 +133,7 @@ $(function() {
     if (!startTime) {
       startTime = Date.now();
 
-      timer = setInterval(function() {
+      timer = setInterval(() => {
         $('#stats-time').text(formatTime(Date.now() - startTime));
       }, 1000);
     }
@@ -159,7 +159,7 @@ $(function() {
           locked = true;
 
           $('[data-status="view"] [data-element="cover"]').delay(500).slideDown('slow')
-            .promise().done(function() {
+            .promise().done(() => {
               $('[data-status="view"]').attr('data-status', 'hide');
 
               locked = false;
@@ -173,16 +173,16 @@ $(function() {
     }
   });
 
-  $('#win-close').on('click', function() {
+  $('#win-close').on('click', () => {
     $('#win').css('display', 'none');
   });
 
-  $('#replay').on('click', function() {
+  $('#replay').on('click', () => {
     location.search = 'level=' + level;
   });
 
   if (level < validCouples.length) {
-    $('#next').on('click', function() {
+    $('#next').on('click', () => {
       location.search = 'level=' + (level + 1);
     });
   } else {
