@@ -166,15 +166,16 @@ $(function() {
         } else {
           locked = true;
 
-          $('[data-status="view"] [data-element="cover"]').delay(500).slideDown('slow', function(){
-            $('[data-status="view"]').attr('data-status', 'hide');
+          $('[data-status="view"] [data-element="cover"]').delay(500).slideDown('slow')
+            .promise().done(function() {
+              $('[data-status="view"]').attr('data-status', 'hide');
 
-            count = pair.length;
+              count = 0;
 
-            pair = [];
+              pair = [];
 
-            locked = false;
-          });
+              locked = false;
+            });
         }
       }
     }
