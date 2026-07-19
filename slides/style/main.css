@@ -1,0 +1,522 @@
+@font-face {
+  font-display: swap;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 800; /* the subset is limited to the weights the deck renders */
+  src: url("../../font/inter.woff2") format("woff2");
+}
+
+:root {
+  /* Radix Colors (workos/radix, MIT), dark. Fill (step 9) and accent-text (step 11) are split: --acc vs --acc-text. */
+  --acc: #e54666;          /* ruby-9: fill (buttons, active dot) */
+  --acc-hi: #ec5a72;       /* ruby-10: button hover */
+  --acc-text: #ff949d;     /* ruby-11: accent text (kickers, links, keywords) */
+  --on-acc: #ffffff;       /* text on the ruby fill */
+  --bg: #111111;           /* gray-1: ground */
+  --bg-code: #222222;      /* gray-3: code panels */
+  --brd: #3a3a3a;          /* gray-6: borders */
+  --card: #eeeeee;         /* gray-12: revealed card */
+  --code-comment: #b4b4b4; /* gray-11: comments */
+  --code-line: #b4b4b4;    /* gray-11: line numbers */
+  --code-num: #baa7ff;     /* violet-11: numbers */
+  --code-str: #71d083;     /* grass-11: strings */
+  --mut: #b4b4b4;          /* gray-11: muted text */
+  --surf: #222222;         /* gray-3: raised surfaces */
+  --txt: #eeeeee;          /* gray-12: text */
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  margin: 0;
+}
+
+a {
+  color: var(--acc-text);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+code, kbd {
+  font-family: var(--mono);
+  font-size: 0.9em;
+}
+
+kbd {
+  border: 1px solid var(--brd);
+  border-radius: 4px;
+  padding: 0 6px;
+}
+
+h1, h2 {
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+/* Deck: the scroller; one full-viewport slide per section, scroll-snap pages (script/main.js adds keyboard, dots, counter). */
+.deck {
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+}
+
+.slide {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 24px;
+  position: relative;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.inner {
+  max-width: 720px;
+  width: 100%;
+}
+
+.inner.center {
+  text-align: center;
+}
+
+/* Title lockup (like the OG): the card row (::before) is 74.7% of the wordmark to reach the ".", sharing its left edge;
+   sized in font-size fractions so the lockup scales as one. */
+h1 {
+  display: inline-block;
+  font-size: clamp(3.5rem, 11vw, 6rem);
+  font-weight: 800;
+  margin: 0;
+}
+
+h1::before {
+  aspect-ratio: 522 / 120;
+  background: url("../../image/cards.svg") left center / contain no-repeat;
+  content: "";
+  display: block;
+  margin-bottom: -0.115em; /* absorb the h1 top leading so the gap matches the o->j stem */
+  width: 74.7%;
+}
+
+.tagline {
+  color: var(--mut);
+  font-size: clamp(1.05rem, 3.5vw, 1.25rem);
+  margin: 12px auto 0;
+  max-width: 42ch;
+  text-wrap: balance;
+}
+
+/* Cover: content toward the top; each text block on its own narrow measure so the chunks read apart. */
+.slide.cover {
+  align-items: flex-start;
+  padding-top: clamp(40px, 9vh, 110px);
+}
+
+.cover .tagline {
+  margin-top: 20px;
+}
+
+.cover .cta {
+  margin-top: 60px;
+}
+
+.cover .story,
+.cover .lead {
+  margin: 40px auto 0;
+  max-width: 40rem;
+  text-align: left;
+}
+
+.cover .story {
+  text-align: justify;
+}
+
+/* Ruby list marker drawn in CSS (ASCII rule: no bullet character). */
+ul.lead {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul.lead li {
+  padding-left: 1.5em;
+  position: relative;
+}
+
+ul.lead li + li {
+  margin-top: 10px;
+}
+
+ul.lead li::before,
+.col li::before {
+  background: var(--acc-text);
+  border-radius: 2px;
+  content: "";
+  height: 0.5em;
+  left: 0;
+  position: absolute;
+  top: 0.5em;
+  width: 0.5em;
+}
+
+.kicker {
+  color: var(--acc-text);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  margin: 0 0 4px;
+}
+
+.slide h2 {
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  margin: 0 0 12px;
+}
+
+.lead {
+  color: var(--mut);
+  font-size: clamp(1rem, 3vw, 1.15rem);
+  margin: 0 0 20px;
+}
+
+.fine {
+  color: var(--mut);
+  font-size: 0.85rem;
+  margin: 16px 0 0;
+}
+
+/* Code slides: CodeMirror (dark) + Run/Clear + output. */
+.CodeMirror {
+  background: var(--bg-code);
+  border: 1px solid var(--brd);
+  border-radius: 12px 12px 0 0;
+  color: var(--txt);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  height: auto;
+  padding: 8px 0;
+  position: relative;
+}
+
+.CodeMirror-gutters {
+  background: var(--bg-code);
+  border: none;
+}
+
+.CodeMirror-linenumber { color: var(--code-line); }
+.CodeMirror-cursor { border-left-color: var(--txt); }
+
+/* Scoped to .cm-s-default to beat CodeMirror's default-theme colors (same specificity, loaded after). */
+.cm-s-default .cm-comment { color: var(--code-comment); }
+.cm-s-default :is(.cm-keyword, .cm-atom) { color: var(--acc-text); font-weight: 600; }
+.cm-s-default .cm-number { color: var(--code-num); }
+.cm-s-default .cm-string { color: var(--code-str); }
+.cm-s-default .cm-operator { color: var(--mut); }
+.cm-s-default :is(.cm-variable, .cm-variable-2, .cm-property, .cm-def) { color: var(--txt); }
+/* A quoted object key is both cm-string and cm-property; keep it string-green. */
+.cm-s-default .cm-string.cm-property { color: var(--code-str); }
+
+/* HTML/CSS tokens in the same Radix roles: tags/selectors ruby, attributes violet, brackets/doctype muted. */
+.cm-s-default :is(.cm-tag, .cm-qualifier) { color: var(--acc-text); }
+.cm-s-default .cm-attribute { color: var(--code-num); }
+.cm-s-default :is(.cm-bracket, .cm-meta) { color: var(--mut); }
+
+/* string-2 = JS template literal/regex (string-green) vs a hyphenated CSS property in css mode (plain). */
+.cm-s-default .cm-string-2 { color: var(--code-str); }
+.cm-s-default.cm-mode-css .cm-string-2 { color: var(--txt); }
+
+.run {
+  display: flex;
+  gap: 6px;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  z-index: 5;
+}
+
+.run button {
+  background: var(--surf);
+  border: 1px solid var(--brd);
+  border-radius: 6px;
+  color: var(--txt);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  padding: 3px 10px;
+}
+
+.run button:hover { border-color: var(--acc); }
+
+.out {
+  background: var(--bg-code);
+  border: 1px solid var(--brd);
+  border-radius: 0 0 12px 12px;
+  border-top: 0;
+  color: var(--mut);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  margin-top: 0;
+  min-height: 1.6em;
+  padding: 10px 14px;
+  white-space: pre-wrap;
+}
+
+/* The idea slide: three card states (back, revealed) as real cards. */
+.cards-row {
+  display: flex;
+  gap: clamp(8px, 3vw, 20px);
+  justify-content: center;
+  margin: 40px 0 0;
+}
+
+.mini {
+  margin: 0;
+  text-align: center;
+}
+
+.mini-card {
+  align-items: center;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  width: clamp(60px, 16vw, 96px);
+}
+
+.mini-card.is-hide {
+  background: url("../../image/card-back.svg") center / cover no-repeat;
+}
+
+.mini-card.is-show {
+  background: var(--card);
+}
+
+.mini-card img {
+  height: auto;
+  width: 86%;
+}
+
+.mini figcaption {
+  color: var(--mut);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
+
+.cols {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.col {
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+
+.col h3 {
+  color: var(--acc-text);
+  font-size: 1.1rem;
+  margin: 0 0 8px;
+}
+
+.col ul {
+  color: var(--mut);
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
+.col li {
+  margin: 4px 0;
+  padding-left: 1.5em;
+  position: relative;
+}
+
+/* Parts: numbered cards via a CSS counter (decimal-leading-zero). */
+.parts {
+  color: var(--mut);
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  counter-reset: part;
+  margin: 0;
+  padding: 0;
+}
+
+.parts li {
+  background: var(--bg);
+  border: 1px solid var(--brd);
+  border-radius: 12px;
+  counter-increment: part;
+  padding: 14px 20px;
+}
+
+.parts li::before {
+  color: var(--acc-text);
+  content: counter(part, decimal-leading-zero);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  margin-right: 12px;
+}
+
+.parts strong {
+  color: var(--txt);
+}
+
+.cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 24px;
+}
+
+.cta a {
+  align-items: center;
+  background: var(--surf);
+  border: 1px solid var(--brd);
+  border-radius: 8px;
+  color: var(--txt);
+  display: inline-flex;
+  font-size: 0.95rem;
+  font-weight: 600;
+  gap: 8px;
+  padding: 10px 20px;
+}
+
+.cta a:hover {
+  border-color: var(--acc);
+  text-decoration: none;
+}
+
+/* Primary CTA: filled accent, the one action to take. */
+.cta a.primary {
+  background: var(--acc);
+  border-color: var(--acc);
+  color: var(--on-acc);
+}
+
+.cta a.primary:hover {
+  background: var(--acc-hi);
+}
+
+/* CTA icons: monochrome SVG masks, tinted via currentColor (white on the primary fill, text color elsewhere). */
+.cta .built::before,
+.cta .primary::before,
+.cta .github::before {
+  background-color: currentColor;
+  content: "";
+  flex: none;
+  height: 16px;
+  width: 16px;
+  -webkit-mask: center / contain no-repeat;
+  mask: center / contain no-repeat;
+}
+
+.cta .built::before   { -webkit-mask-image: url("../../image/code.svg");   mask-image: url("../../image/code.svg"); }
+.cta .primary::before { -webkit-mask-image: url("../../image/play.svg");   mask-image: url("../../image/play.svg"); }
+.cta .github::before  { -webkit-mask-image: url("../../image/github.svg"); mask-image: url("../../image/github.svg"); }
+
+/* Footer, fixed bottom-center (the counter sits bottom-left). */
+.foot-note {
+  background: var(--bg);
+  border-radius: 6px;
+  bottom: 12px;
+  color: var(--mut);
+  font-size: 0.8rem;
+  left: 50%;
+  margin: 0;
+  padding: 4px 12px;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+/* Dots and counter (populated by script/main.js). */
+.dots {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dots button {
+  background: var(--brd);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 10px;
+  padding: 0;
+  width: 10px;
+}
+
+.dots button[aria-current="true"] {
+  background: var(--acc);
+}
+
+.counter {
+  background: var(--bg);
+  border-radius: 6px;
+  bottom: 12px;
+  color: var(--mut);
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  left: 16px;
+  margin: 0;
+  padding: 4px 10px;
+  position: fixed;
+  z-index: 10;
+}
+
+@media (max-width: 720px) {
+  .dots {
+    right: 6px;
+  }
+
+  .slide pre {
+    font-size: 0.72rem;
+    padding: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .deck {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Narrow: move the footer up-left so it clears the counter. */
+@media (max-width: 480px) {
+  .foot-note {
+    bottom: 44px;
+    left: 16px;
+    text-align: left;
+    transform: none;
+  }
+}
+
+/* Tight screens: relax the mandatory snap (over-tall slides can scroll) and pad the bottom for the fixed footer. */
+@media (max-width: 560px), (max-height: 780px) {
+  .deck {
+    scroll-snap-type: y proximity;
+  }
+
+  .slide {
+    padding-bottom: 80px;
+  }
+}

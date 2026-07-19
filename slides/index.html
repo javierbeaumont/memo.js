@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>memo.js slides: Classic Board Game with jQuery</title>
+  <link rel="apple-touch-icon" href="../image/apple-touch-icon.png">
+  <link rel="canonical" href="https://javier.beaumont.eus/memo.js/slides/">
+  <link rel="icon" type="image/svg+xml" href="../image/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="../image/favicon.png">
+  <link rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+  <link rel="preload" href="../font/inter.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../image/cards.svg" as="image" type="image/svg+xml">
+  <link rel="stylesheet" href="style/codemirror.css">
+  <link rel="stylesheet" href="style/main.css">
+  <!-- repo's own jQuery so runnable snippets use the real $ -->
+  <script src="../script/jquery.js" defer></script>
+  <script src="script/codemirror.js" defer></script>
+  <script src="script/codemirror-modes.js" defer></script>
+  <script src="script/main.js" defer></script>
+  <meta name="color-scheme" content="dark">
+  <meta name="dcterms.rights" content="https://creativecommons.org/licenses/by-sa/4.0/">
+  <meta name="description" content="How you can build the classic Memory card game with jQuery, explained slide by slide: the board, the cards, the DOM and the player interaction.">
+  <meta name="theme-color" content="#111111">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://javier.beaumont.eus/memo.js/image/og.png">
+  <meta property="og:description" content="How you can build the classic Memory card game with jQuery, explained slide by slide: the board, the cards, the DOM and the player interaction.">
+  <meta property="og:image:alt" content="memo.js: Classic Board Game with jQuery">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image" content="https://javier.beaumont.eus/memo.js/image/og.png">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="javier.beaumont.eus">
+  <meta property="og:title" content="memo.js slides: Classic Board Game with jQuery">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://javier.beaumont.eus/memo.js/slides/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "author": { "@type": "Person", "name": "Javier Beaumont" },
+    "codeRepository": "https://github.com/javierbeaumont/memo.js",
+    "description": "How you can build the classic Memory card game with jQuery, explained slide by slide: the board, the cards, the DOM and the player interaction.",
+    "image": "https://javier.beaumont.eus/memo.js/image/og.png",
+    "isAccessibleForFree": true,
+    "license": "https://opensource.org/license/mit",
+    "name": "memo.js: Classic Board Game with jQuery",
+    "programmingLanguage": "JavaScript",
+    "url": "https://javier.beaumont.eus/memo.js/slides/"
+  }
+  </script>
+</head>
+<body>
+
+  <main class="deck">
+
+    <!-- 1 -- Cover -->
+    <section class="slide cover" aria-label="Cover">
+      <div class="inner center">
+        <!-- card row: decorative ::before on the wordmark (main.css) -->
+        <h1>memo.js</h1>
+        <p class="tagline">
+          Classic Board Game with jQuery
+        </p>
+        <p class="lead story">
+          In 2013, colleagues agreed a game was hard to build, with few specialized
+          libraries and a lot to wire up by hand. I disagreed. You could build one
+          with almost anything, even something as far from games as jQuery. They
+          called it impossible. So I built it.
+        </p>
+        <ul class="lead">
+          <li><strong>jQuery</strong> is enough to get simple board games with few code lines.</li>
+          <li><strong>Memorize</strong> is one of the simplest games of this genre.</li>
+          <li>Combine them and obtain your first <strong>JavaScript</strong> game in few minutes.</li>
+        </ul>
+        <nav class="cta" aria-label="Project links">
+          <a class="built" href="#start">See how it's built</a>
+          <a class="primary" href="../">Play the demo</a>
+          <a class="github" href="https://github.com/javierbeaumont/memo.js">View the source</a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- 2 -- jQuery: Advantages and disadvantages -->
+    <section class="slide" id="start" aria-label="jQuery: Advantages and disadvantages">
+      <div class="inner">
+        <p class="kicker">jQuery</p>
+        <h2>Advantages and disadvantages</h2>
+        <div class="cols">
+          <article class="col">
+            <h3>Pros</h3>
+            <ul>
+              <li>Free Software</li>
+              <li>Community and Documentation</li>
+              <li>Browser, DOM and Ajax Support</li>
+            </ul>
+          </article>
+          <article class="col">
+            <h3>Cons</h3>
+            <ul>
+              <li>Performance and Size</li>
+              <li>Structure and Organization</li>
+              <li>Data Manipulation Support</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3 -- Memorize: Definition and cards -->
+    <section class="slide" aria-label="Memorize: Definition and cards">
+      <div class="inner">
+        <p class="kicker">Memorize</p>
+        <h2>Definition and cards</h2>
+        <ul class="lead">
+          <li>Show any compact set of unordered pairs of cards.</li>
+          <li>The cards will be hidden and shown when the player interacts with them.</li>
+          <li>Every pair of cards clicked will be checked for equality, in which case
+              they will remain permanently visible. If they are different, they will
+              hide again.</li>
+        </ul>
+        <div class="cards-row" aria-label="The two card states">
+          <figure class="mini">
+            <div class="mini-card is-hide" aria-hidden="true"></div>
+            <figcaption>hide</figcaption>
+          </figure>
+          <figure class="mini">
+            <div class="mini-card is-show" aria-hidden="true"><img src="../image/lady_beetle_3d.png" alt=""></div>
+            <figcaption>show</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 -- Memorize: Parts -->
+    <section class="slide" aria-label="Memorize: Parts">
+      <div class="inner">
+        <p class="kicker">Memorize</p>
+        <h2>Parts</h2>
+        <ol class="parts">
+          <li><strong>Board</strong>: how many rows and columns.</li>
+          <li><strong>Playing cards</strong>: pick the images, pair them, shuffle the deck.</li>
+          <li><strong>Print elements</strong>: HTML, CSS and injecting the cards into the DOM.</li>
+          <li><strong>Player interaction</strong>: flip, compare, resolve.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5 -- Board: Square grid -->
+    <section class="slide" aria-label="Board: Square grid">
+      <div class="inner">
+        <p class="kicker">01: Board</p>
+        <h2>Square grid</h2>
+        <p class="lead">
+          Compact and rectangular area where the playing cards are grouped.
+        </p>
+<script type="text/plain" data-cm-setup>const config = { couples: [3, 6, 8, 12, 14, 16, 18, 20, 24, 28, 32, 36][Math.floor(Math.random() * 12)] };</script>
+<textarea class="cm" data-run>// Playing Card Distribution
+const couples = config.couples // From configuration file
+  , cards = couples * 2;
+
+// Lists all divisors from number of playing cards
+const l = [];
+
+for (let d = 1; d <= cards; d++){
+  if(cards % d === 0) {
+    l.push(d);
+  }
+}
+
+// Select best divisors from the list
+const w = (l.length % 2 === 0) ? [1, 0] : [.5, .5]
+  , short = l[l.length / 2 - w[0]]
+  , long  = l[l.length / 2 - w[1]];</textarea>
+<script type="text/plain" data-cm-cleanup>console.log(cards + ' playing cards in a ' + short + ' x ' + long + ' board');</script>
+      </div>
+    </section>
+
+    <!-- 6 -- Playing cards: Selection -->
+    <section class="slide" aria-label="Playing cards: Selection">
+      <div class="inner">
+        <p class="kicker">02: Playing cards</p>
+        <h2>Selection</h2>
+        <p class="lead">
+          Select playing cards between available ones and, if possible, without repeating.
+        </p>
+        <script type="text/plain" data-cm-setup>const config = {
+  couples: Math.floor(Math.random() * 14) + 5,
+  id: {
+    min: Math.floor(Math.random() * 4) + 1,
+    max: Math.floor(Math.random() * 49) + 11
+  }
+};</script>
+<textarea class="cm" data-run>// Playing Cards Selection
+const couples = config.couples // From configuration file
+  , minId = config.id.min      // From configuration file
+  , maxId = config.id.max      // From configuration file
+  , list = [];
+
+while(list.length < couples) {
+  const m = Math.floor((Math.random() * (maxId - minId)) + minId);
+
+  if (maxId - minId <= list.length || $.inArray(m, list) === -1) {
+    list.push(m);
+  }
+}</textarea>
+        <script type="text/plain" data-cm-cleanup>console.log(couples + ' pairs with ' + (maxId - minId) + ' different cards: [' + list + ']');</script>
+      </div>
+    </section>
+
+    <!-- 7 -- Playing cards: Shuffling the deck -->
+    <section class="slide" aria-label="Playing cards: Shuffling the deck">
+      <div class="inner">
+        <p class="kicker">02: Playing cards</p>
+        <h2>Shuffling the deck</h2>
+        <p class="lead">
+          Shuffle the deck to unsort the playing cards.
+        </p>
+<textarea class="cm" data-run>// Shuffle The Deck (Fisher-Yates)
+const list = [1, 2, 3, 4];
+
+$.merge(list, list);
+
+for (let position = list.length - 1; position > 0; position--) {
+  const randomIndex = Math.floor(Math.random() * (position + 1));
+
+  [list[position], list[randomIndex]] = [list[randomIndex], list[position]];
+}</textarea>
+        <script type="text/plain" data-cm-cleanup>console.log('[' + list.join(', ') + ']');</script>
+        <p class="fine">
+          <code>$.merge(list, list)</code> concatenates the list onto itself: that
+          single call is what turns cards into pairs. The shuffle is
+          <a href="https://en.wikipedia.org/wiki/Fisher-Yates_shuffle" target="_blank" rel="noopener">Fisher-Yates</a>:
+          walk from the end, swapping each card with a random earlier one, so every
+          ordering is equally likely.
+        </p>
+      </div>
+    </section>
+
+    <!-- 8 -- Print elements: Basic HTML -->
+    <section class="slide" aria-label="Print elements: Basic HTML">
+      <div class="inner">
+        <p class="kicker">03: Print elements</p>
+        <h2>Basic HTML</h2>
+<textarea class="cm" data-mode="htmlmixed">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+    &lt;title&gt;memo.js&lt;/title&gt;
+    &lt;link rel="stylesheet" href="style/memo.css" /&gt;
+    &lt;script src="script/jquery.js" defer&gt;&lt;/script&gt;
+    &lt;script src="script/memo.js" defer&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div class="board" data-element="board"&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</textarea>
+      </div>
+    </section>
+
+    <!-- 9 -- Print elements: Basic CSS -->
+    <section class="slide" aria-label="Print elements: Basic CSS">
+      <div class="inner">
+        <p class="kicker">03: Print elements</p>
+        <h2>Basic CSS</h2>
+<textarea class="cm" data-mode="css">.board {
+  display: grid;
+  gap: clamp(8px, 2.2vw, 18px);
+  grid-template-columns: repeat(var(--long), 1fr);
+}
+
+.card {
+  aspect-ratio: 3 / 4;
+  background: #eee;
+  border-radius: 9px;
+  position: relative;
+}
+
+.card img {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 86%;
+}
+
+[data-element="cover"] {
+  background: url("../image/card-back.svg") center / cover no-repeat;
+  cursor: pointer;
+  inset: 0;
+  position: absolute;
+}</textarea>
+        <p class="fine">
+          <code>--long</code> is the column count; the JS computes it and sets it on
+          the board.
+        </p>
+      </div>
+    </section>
+
+    <!-- 10 -- Print elements: Board and playing cards -->
+    <section class="slide" aria-label="Print elements: Board and playing cards">
+      <div class="inner">
+        <p class="kicker">03: Print elements</p>
+        <h2>Board and playing cards</h2>
+        <p class="lead">
+          DOM and style manipulation.
+        </p>
+<textarea class="cm">// Playing Card HTML Code
+const card = file => `
+      &lt;div class="card" data-status="hide"&gt;
+        &lt;img src="image/${file}" /&gt;
+        &lt;div data-element="cover"&gt;&lt;/div&gt;
+      &lt;/div&gt;`;
+
+// Print Board and Playing Cards
+$('[data-element="board"]')
+  .append(() => {
+    let data = '';
+
+    $.each(list, (index, id) => {
+      const file = emojis[id] + '_3d.png';
+
+      data += card(file);
+    });
+
+    return data;
+  })
+  .css({ '--long': long, '--short': short });</textarea>
+        <p class="fine">
+          The JS sets <code>--long</code> and <code>--short</code> on the board; CSS grid
+          uses them for the column count: <code>--long</code> in landscape,
+          <code>--short</code> in portrait.
+        </p>
+      </div>
+    </section>
+
+    <!-- 11 -- Player interaction: Selection -->
+    <section class="slide" aria-label="Player interaction: Selection">
+      <div class="inner">
+        <p class="kicker">04: Player interaction</p>
+        <h2>Selection</h2>
+        <p class="lead">
+          A click selects a card: set its status from <code>hide</code> to
+          <code>view</code> and push its face into <code>pair</code>. On the second
+          card, compare.
+        </p>
+<textarea class="cm">// Player Interaction
+let count = 0
+  , pair = [];
+
+$('[data-element="cover"]').on('click', function() {
+  if ($(this).parent().attr('data-status') !== 'hide') return;
+
+  count ++;
+
+  if (count <= 2) {
+    // Slide effect: slideUp
+    $(this).parent().attr('data-status', 'view');
+    pair.push($(this).prev().attr('src'));
+
+    if (count === 2) {
+      // Comparison
+    }
+  }
+});</textarea>
+      </div>
+    </section>
+
+    <!-- 12 -- Player interaction: Comparison -->
+    <section class="slide" aria-label="Player interaction: Comparison">
+      <div class="inner">
+        <p class="kicker">04: Player interaction</p>
+        <h2>Comparison</h2>
+        <p class="lead">
+          On the second card, compare the pair: a match promotes both to
+          <code>show</code>; a miss returns them to <code>hide</code>. Then reset
+          <code>count</code> and <code>pair</code> for the next turn.
+        </p>
+<textarea class="cm">// Comparison
+if (count === 2) {
+  if (pair[0] === pair[1]) {
+    $('[data-status="view"]').attr('data-status', 'show');
+  } else {
+    // Slide effect: slideDown
+    $('[data-status="view"]').attr('data-status', 'hide');
+  }
+
+  count = 0;
+  pair = [];
+}</textarea>
+        <p class="fine">
+          Cards match by image <em>source</em>: <code>pair</code> holds two
+          <code>&lt;img src&gt;</code> values, equal only when it is the same
+          emoji file.
+        </p>
+      </div>
+    </section>
+
+    <!-- 13 -- Player interaction: Slide effect -->
+    <section class="slide" aria-label="Player interaction: Slide effect">
+      <div class="inner">
+        <p class="kicker">04: Player interaction</p>
+        <h2>Slide effect</h2>
+        <p class="lead">
+          jQuery adds the motion: on reveal the cover slides up, and a missed pair
+          slides back down after <code>delay(500)</code>.
+        </p>
+<textarea class="cm">// Slide effect
+let count = 0
+  , pair = [];
+
+$('[data-element="cover"]').on('click', function() {
+  count ++;
+  if (count <= 2) {
+    $(this).slideUp('slow');
+    // ... selection
+    if (count === 2) {
+      if (pair[0] === pair[1]) {
+        // ... comparison: show
+      } else {
+        $('[data-status="view"] [data-element="cover"]')
+          .delay(500).slideDown('slow')
+          .promise().done(() => {
+            // ... comparison: hide
+          });
+      }
+
+      count = 0;
+      pair = [];
+    }
+  }
+});</textarea>
+        <p class="fine">
+          The <code>// ...</code> parts are unchanged from the earlier slides. New here:
+          <code>slideUp</code> reveals the card, and a missed pair slides back down after
+          <code>delay(500)</code>.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="dots" aria-label="Slide navigation"></nav>
+  <p class="counter" aria-hidden="true"></p>
+
+  <footer class="foot-note">
+    <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license noopener" target="_blank">CC-BY-SA 4.0</a> by <a href="https://javier.beaumont.eus">javier.beaumont.eus</a>
+  </footer>
+</body>
+</html>
