@@ -1,3 +1,11 @@
+@font-face {
+  font-display: swap;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 800;
+  src: url("../font/inter.woff2") format("woff2");
+}
+
 :root {
   --bg: #111111;
   --card: #eeeeee;
@@ -14,7 +22,7 @@ body {
   color: var(--txt);
   display: flex;
   flex-direction: column;
-  font-family: system-ui, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   justify-content: center;
   margin: 0;
   min-height: 100vh;
@@ -44,7 +52,7 @@ body {
   padding: 2px 6px;
 }
 
-/* Footer below the board: the wordmark plus links to the deck and the source. */
+/* Footer below the board: the wordmark plus links to the slides, the source and the license. */
 .stat-links {
   align-items: center;
   display: flex;
@@ -52,25 +60,49 @@ body {
   margin-top: 20px;
 }
 
+/* The wordmark leads; the 3 links are sized to the same visible height (~12px, the wordmark's
+   x-height at Inter 1.4rem) so they read balanced. Rescale the numbers if the font/size changes. */
 .stat-links .mark {
   color: var(--mut);
+  font-size: 1.4rem;
   font-weight: 600;
 }
 
 .stat-links a {
-  background-color: currentColor;
   color: var(--mut);
-  height: 15px;
-  width: 15px;
+  position: relative;
+  top: 2.45px; /* lower the 3 links onto the wordmark's x-height center (lowercase sits low in its box) */
 }
 
 .stat-links a:hover {
   color: var(--txt);
 }
 
+.stat-links .license {
+  font-size: 16.65px; /* all-caps "MIT": cap-height (~0.73em) matches the icons' ~12px */
+  text-decoration: none;
+}
+
+.stat-links .built,
 .stat-links .github {
-  -webkit-mask: url("../image/github.svg") center / contain no-repeat;
-  mask: url("../image/github.svg") center / contain no-repeat;
+  -webkit-mask: center / contain no-repeat;
+  background-color: currentColor;
+  mask: center / contain no-repeat;
+}
+
+/* Icon boxes differ so both glyphs render ~12px tall (code.svg fills ~75% of its box, github ~98%). */
+.stat-links .built {
+  -webkit-mask-image: url("../image/code.svg");
+  height: 16px;
+  mask-image: url("../image/code.svg");
+  width: 16px;
+}
+
+.stat-links .github {
+  -webkit-mask-image: url("../image/github.svg");
+  height: 12.4px;
+  mask-image: url("../image/github.svg");
+  width: 12.4px;
 }
 
 #win {
@@ -78,12 +110,9 @@ body {
   background: rgba(17, 17, 17, 0.92);
   display: none;
   flex-direction: column;
-  height: 100%;
+  inset: 0;
   justify-content: center;
-  left: 0;
   position: fixed;
-  top: 0;
-  width: 100%;
   z-index: 10; /* sit above the footer (a flex item) so it is the only active layer */
 }
 
